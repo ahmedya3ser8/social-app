@@ -1,0 +1,13 @@
+@for (comment of comments(); track comment._id) {
+  <div class="comment bg-gray-200 p-5">
+    <div class="comment_head flex items-center gap-3">
+      <img class="size-10 rounded-full" [src]="comment.commentCreator.photo" alt="user-image" />
+      <h3 class="font-bold">{{comment.commentCreator.name}}</h3>
+      <span class="text-sm text-gray-400 font-semibold">{{comment.createdAt | date}}</span>
+    </div>
+    <p class="comment_body">
+      {{comment.content}}
+    </p>
+  </div>
+
+}

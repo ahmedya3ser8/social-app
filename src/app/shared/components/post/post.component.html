@@ -1,0 +1,22 @@
+<div class="post bg-white p-5 rounded-md flex flex-col gap-3">
+  <div class="post_head flex gap-3">
+    <img class="size-12 rounded-full" [src]="post().user.photo" alt="user-image" />
+    <div class="post_head_content">
+      <h3 class="font-bold">{{post().user.name}}</h3>
+      <span class="text-sm text-gray-400 font-semibold">{{post().createdAt | date }}</span>
+    </div>
+  </div>
+  <p class="post_body">
+    {{post().body}}
+  </p>
+  <img class="post_image w-full rounded-md" [src]="post().image" alt="post-image" />
+  <button #showComment class="p-2 bg-blue-600 text-white rounded-md w-fit mx-auto font-medium">Show Comments</button>
+  <!-- comment -->
+  @defer (on interaction(showComment)) {
+    <div class="h-[300px] overflow-y-auto">
+      <app-comment [postId]="post().id" ></app-comment>
+    </div>
+    <app-create-comment [postId]="post().id"></app-create-comment>
+  }
+  <!-- comment -->
+</div>
