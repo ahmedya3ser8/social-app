@@ -1,6 +1,7 @@
-import { Component, inject, input, InputSignal, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, input, InputSignal, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentsService } from '../../../core/services/comments/comments.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-comment',
@@ -8,7 +9,8 @@ import { CommentsService } from '../../../core/services/comments/comments.servic
   templateUrl: './create-comment.component.html',
   styleUrl: './create-comment.component.scss'
 })
-export class CreateCommentComponent implements OnChanges {
+export class CreateCommentComponent implements OnChanges, OnDestroy {
+  subscription: Subscription = new Subscription();
   private readonly commentsService = inject(CommentsService);
   postId: InputSignal<string> = input.required();
   commentForm!: FormGroup;
@@ -20,14 +22,16 @@ export class CreateCommentComponent implements OnChanges {
   }
   submitCommentForm() {
     if (this.commentForm.valid) {
-      this.commentsService.createComment(this.commentForm.value).subscribe({
+      this.subscription = this.commentsService.createComment(this.commentForm.value).subscribe({
         next: (res) => {
-          console.log(res);
           if (res.message === "success") {
             this.commentForm.reset();
           }
         }
       })
     }
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

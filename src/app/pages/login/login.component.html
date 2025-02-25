@@ -1,0 +1,37 @@
+<section class="pt-5">
+  <div class="max-w-screen-md mx-auto bg-white p-5">
+    <h2 class="text-blue-600 font-bold text-3xl text-center mb-5">SignIn Now</h2>
+    <form [formGroup]="signInForm" (ngSubmit)="submitSignInForm()">
+      <div class="mb-5">
+        <input type="email" formControlName="email" placeholder="Type your email..." class="bg-[#f6f6f6] border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-0 focus:border-gray-300 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        @if (email?.errors && email?.touched) {
+          <div class="mt-1">
+            <ul class="max-w-md space-y-1 text-red-600 list-none ps-1 dark:text-gray-400">
+              @if (email?.getError('required')) {
+                <li>email is required</li>
+              } @else if (email?.getError('email')) {
+                <li>email should be valid</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+      <div class="mb-5">
+        <input type="password" formControlName="password" placeholder="Type your password..." class="bg-[#f6f6f6] border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-0 focus:border-gray-300 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        @if (password?.errors && password?.touched) {
+          <div class="mt-1">
+            <ul class="space-y-1 text-red-600 list-none dark:text-gray-400">
+              @if (password?.getError('required')) {
+                <li>password is required</li>
+              } @else if (password?.getError('pattern')) {
+                <li>password must start with upperCase and speical character then any 10 chars or more</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+      <button type="submit" class="py-2 px-4 w-full bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all duration-700" >SignIn</button>
+      <p class="mt-2 text-center">you don't have an account? <span class="text-blue-600 cursor-pointer" routerLink="/auth/register" >register</span></p>
+    </form>
+  </div>
+</section>

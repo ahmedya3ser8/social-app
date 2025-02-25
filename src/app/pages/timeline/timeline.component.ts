@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { PostsService } from '../../core/services/posts/posts.service';
 import { PostComponent } from "../../shared/components/post/post.component";
 import { IPost } from '../../shared/interfaces/ipost';
-import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-timeline',
@@ -10,8 +11,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss'
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit, OnDestroy {
+  isOpen: boolean = false;
   postsList: WritableSignal<IPost[]> = signal([]);
+  subscriptions: Subscription[] = [];
   content: string = '';
   saveImage: any
   private readonly postsService = inject(PostsService);
@@ -19,11 +22,13 @@ export class TimelineComponent implements OnInit {
     this.getAllPosts();
   }
   getAllPosts(): void {
-    this.postsService.getAllPosts().subscribe({
+    this.subscriptions.push(this.postsService.getAllPosts().subscribe({
       next: (res) => {
-        this.postsList.set(res.posts);
+        if (res.message === "success") {
+          this.postsList.set(res.posts);
+        }
       }
-    })
+    }))
   }
   savedImg(event: Event): void {
     const inputFile = event.target as HTMLInputElement;
@@ -35,10 +40,18 @@ export class TimelineComponent implements OnInit {
     const postForm: FormData = new FormData();
     postForm.append('body', this.content);
     postForm.append('image', this.saveImage);
-    this.postsService.createPost(postForm).subscribe({
+    this.subscriptions.push(this.postsService.createPost(postForm).subscribe({
       next: (res) => {
-        console.log(res);
+        if (res.message === "success") {
+          this.openModel();
+        }
       }
-    })
+    }))
+  }
+  openModel(): void {
+    this.isOpen ? this.isOpen = false : this.isOpen = true;
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
   }
 }
