@@ -1,0 +1,95 @@
+<section class="pt-10">
+  <div class="container">
+    <h1 class="text-3xl font-bold text-cyan-700 text-center"> Linked Posts </h1>
+    <div class="bg-white p-6 rounded-md shadow max-w-xl mx-auto flex flex-col gap-4 mt-6">
+      <h2 class="text-cyan-600 text-xl font-bold text-center"> Register Now </h2>
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="flex flex-col gap-4">
+        <div class="userName_input">
+          <p-floatlabel variant="on">
+            <input pInputText id="name" [class.!border-red-600]="isFieldInvalid('name')" formControlName="name" autocomplete="off" />
+            <label for="name" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('name')"> UserName </label>
+          </p-floatlabel>
+          @if (form.get('name')?.touched && form.get('name')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> UserName is required </p>
+          }
+        </div>
+        <div class="email_input">
+          <p-floatlabel variant="on">
+            <input pInputText id="email" [class.!border-red-600]="isFieldInvalid('email')" formControlName="email" type="email" autocomplete="off" />
+            <label for="email" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('email')"> Email </label>
+          </p-floatlabel>
+          @if (form.get('email')?.touched && form.get('email')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Email is required </p>
+          } @else if (form.get('email')?.touched && form.get('email')?.getError('email')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Enter valid email </p>
+          }
+        </div>
+        <div class="password_input">
+          <p-floatlabel variant="on">
+            <p-password id="password" [feedback]="false" [inputStyleClass]="isFieldInvalid('password') ? '!border-red-600' : ''" formControlName="password" styleClass="w-full" [toggleMask]="true" autocomplete="off" />
+            <label for="password" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('password')"> Password </label>
+          </p-floatlabel>
+          @if (form.get('password')?.touched && form.get('password')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Password is required </p>
+          } @else if (form.get('password')?.touched && form.get('password')?.getError('pattern')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Password must start with upperCase then any 6 chars or more </p>
+          }
+        </div>
+        <div class="confirmPassword_input">
+          <p-floatlabel variant="on">
+            <p-password id="rePassword" [feedback]="false" [inputStyleClass]="isFieldInvalid('rePassword') ? '!border-red-600' : ''" formControlName="rePassword" styleClass="w-full" [toggleMask]="true" autocomplete="off" />
+            <label for="rePassword" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('rePassword')"> Confirm Password </label>
+          </p-floatlabel>
+          @if (form.get('rePassword')?.touched && form.get('rePassword')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Confirm Password is required </p>
+          } @else if (form.get('rePassword')?.touched && form.get('rePassword')?.getError('mismatch')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Password and confirmPassword dosen't match </p>
+          }
+        </div>
+        <div class="dateOfBirth_input">
+          <p-floatlabel variant="on">
+            <p-datepicker
+              id="dateOfBirth"
+              dateFormat="dd/mm/yy"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [showButtonBar]="true"
+              styleClass="w-full"
+              formControlName="dateOfBirth"
+              [inputStyleClass]="isFieldInvalid('rePassword') ? '!border-red-600' : ''"
+              >
+              <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="fa-solid fa-calendar" (click)="clickCallBack($event)"></i>
+              </ng-template>
+            </p-datepicker>
+            <label for="dateOfBirth" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('dateOfBirth')"> DateOfBirth </label>
+          </p-floatlabel>
+          @if (form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> DateOfBirth is required </p>
+          }
+        </div>
+        <div class="gender_input">
+          <div class="flex gap-4">
+            <div class="flex items-center gap-2">
+              <p-radiobutton inputId="male" formControlName="gender" name="gender" value="male" />
+              <label for="male" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('gender')"> Male </label>
+            </div>
+            <div class="flex items-center gap-2">
+              <p-radiobutton inputId="female" formControlName="gender" name="gender" value="female" />
+              <label for="female" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('gender')"> Female </label>
+            </div>
+          </div>
+          @if (form.get('gender')?.touched && form.get('gender')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> gender is required </p>
+          }
+        </div>
+        <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-lg cursor-pointer transition duration-300 hover:bg-cyan-700">
+          Register
+        </button>
+      </form>
+      <p class="text-gray-600 text-center font-medium">
+        Already have an account? <a routerLink="/auth/login" class="text-cyan-600 font-bold cursor-pointer"> Login </a>
+      </p>
+    </div>
+  </div>
+</section>

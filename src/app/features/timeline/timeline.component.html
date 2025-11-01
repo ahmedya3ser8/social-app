@@ -1,0 +1,55 @@
+<section class="my-6">
+  <div class="container">
+    <div class="bg-white p-5 rounded-lg shadow max-w-xl mx-auto">
+      <input
+        readonly
+        type="text"
+        class="w-full h-12 outline-none p-3 rounded-4xl border border-gray-400 cursor-pointer"
+        placeholder="What's on your mind, Ahmed?"
+        (click)="toggleModal()"
+      />
+    </div>
+    <div class="mt-6 flex flex-col gap-4">
+      @for (post of postsList(); track post.id) {
+        <app-post [post]="post" />
+      }
+    </div>
+  </div>
+</section>
+
+@if (openModal()) {
+  <div class="modal fixed inset-0 bg-black/20 flex justify-center items-center z-[9999]">
+    <div class="modal_container bg-white w-md p-4 rounded-md flex flex-col gap-4">
+      <div class="modal_head flex justify-between items-center">
+        <h2 class="text-gray-900 font-bold text-xl"> Add New Post </h2>
+        <button (click)="closeModal()" class="cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal_body">
+        <div class="flex flex-col gap-4">
+          <textarea
+            [formControl]="contentControl"
+            class="w-full bg-[#f6f6f6] p-2 outline-none rounded-md border border-gray-400 h-24 resize-none"
+            [class.border-red-600]="contentControl.errors && contentControl.touched"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+          <label for="upload-img" class="w-full bg-[#f6f6f6] p-2 rounded-md border-2 border-dashed border-gray-400 h-40 flex flex-col justify-center items-center text-center cursor-pointer relative">
+            <span class="text-gray-600">click to upload or drag and drop</span>
+            <span class="text-gray-500 text-sm">SVG, PNG, JPG or GIF (MAX. 800x400px)</span>
+          </label>
+          <input
+            id="upload-img"
+            type="file"
+            class="hidden"
+            (change)="changeImage($event)"
+          />
+        </div>
+      </div>
+      <div class="modal_footer flex gap-4">
+        <button (click)="submitForm()" class="bg-cyan-600 text-white py-2 px-4 rounded-lg cursor-pointer transition duration-300 hover:bg-cyan-700">Post</button>
+        <button (click)="toggleModal()" class="text-gray-900 py-2 px-4 border border-gray-400 rounded-lg cursor-pointer transition duration-300 hover:bg-gray-300">Close</button>
+      </div>
+    </div>
+  </div>
+}

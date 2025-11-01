@@ -1,0 +1,13 @@
+<header class="p-5 shadow bg-white">
+  <div class="container">
+    <div class="flex justify-between items-center">
+      <div class="logo">
+        <a routerLink="/" class="text-cyan-600 text-3xl font-bold"> Linked Posts </a>
+      </div>
+      <button (click)="menu.toggle($event)" class="profile cursor-pointer relative">
+        <img src="/images/profile.png" class="size-10" alt="profile" />
+        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+      </button>
+    </div>
+  </div>
+</header>

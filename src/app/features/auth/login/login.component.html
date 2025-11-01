@@ -1,0 +1,36 @@
+<section class="pt-10">
+  <div class="container">
+    <h1 class="text-3xl font-bold text-cyan-700 text-center"> Linked Posts </h1>
+    <div class="bg-white p-6 rounded-md shadow max-w-xl mx-auto flex flex-col gap-4 mt-6">
+      <h2 class="text-cyan-600 text-xl font-bold text-center"> Login Now </h2>
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="flex flex-col gap-4">
+        <div class="email_input">
+          <p-floatlabel variant="on">
+            <input pInputText id="email" [class.!border-red-600]="isFieldInvalid('email')" formControlName="email" type="email" autocomplete="off" />
+            <label for="email" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('email')"> Email </label>
+          </p-floatlabel>
+          @if (form.get('email')?.touched && form.get('email')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Email is required </p>
+          } @else if (form.get('email')?.touched && form.get('email')?.getError('email')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Enter valid email </p>
+          }
+        </div>
+        <div class="password_input">
+          <p-floatlabel variant="on">
+            <p-password id="password" [feedback]="false" [inputStyleClass]="isFieldInvalid('password') ? '!border-red-600' : ''" formControlName="password" styleClass="w-full" [toggleMask]="true" autocomplete="off" />
+            <label for="password" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('password')"> Password </label>
+          </p-floatlabel>
+          @if (form.get('password')?.touched && form.get('password')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Password is required </p>
+          }
+        </div>
+        <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-lg cursor-pointer transition duration-300 hover:bg-cyan-700">
+          Login
+        </button>
+      </form>
+      <p class="text-gray-600 text-center font-medium">
+        Don't have an account? <a routerLink="/auth/register" class="text-cyan-600 font-bold cursor-pointer"> Register </a>
+      </p>
+    </div>
+  </div>
+</section>

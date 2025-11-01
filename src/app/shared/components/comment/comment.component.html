@@ -1,0 +1,45 @@
+<div class="post_comment flex flex-col gap-3">
+  <div class="bg-[#f6f6f6] p-5 rounded-lg shadow flex flex-col gap-3">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <div class="image">
+          <img src="/images/profile.png" class="size-8" alt="profile" />
+        </div>
+        <h3> {{commentData().createdAt | date}} </h3>
+      </div>
+      <button (click)="menu.toggle($event)" class="cursor-pointer">
+        <i class="fa-solid fa-ellipsis"></i>
+        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+      </button>
+    </div>
+    <p class="post_comment_description text-gray-700 font-medium"> {{commentData().content}} </p>
+  </div>
+</div>
+
+@if (openModal()) {
+  <div class="modal fixed inset-0 bg-black/20 flex justify-center items-center z-[9999]">
+    <div class="modal_container bg-white w-md p-4 rounded-md flex flex-col gap-4">
+      <div class="modal_head flex justify-between items-center">
+        <h2 class="text-gray-900 font-bold text-xl"> Update Comment </h2>
+        <button (click)="closeModal()" class="cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="modal_body flex flex-col gap-4">
+        <div class="userName_input">
+          <p-floatlabel variant="on">
+            <input pInputText id="name" [class.!border-red-600]="isFieldInvalid('content')" formControlName="content" autocomplete="off" />
+            <label for="name" class="!text-sm !font-normal" [class.!text-red-600]="isFieldInvalid('content')"> Content </label>
+          </p-floatlabel>
+          @if (form.get('content')?.touched && form.get('content')?.getError('required')) {
+            <p class="text-red-500 text-sm mt-1 lowercase"> Content is required </p>
+          }
+        </div>
+        <div class="modal_footer flex gap-4">
+          <button type="submit" class="bg-cyan-600 text-white py-2 px-4 rounded-lg cursor-pointer transition duration-300 hover:bg-cyan-700">Update</button>
+          <button (click)="closeModal()" type="button" class="text-gray-900 py-2 px-4 border border-gray-400 rounded-lg cursor-pointer transition duration-300 hover:bg-gray-300">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
